@@ -191,34 +191,33 @@ def get(args):
 
     for l in tf():
         done = False
-        while True:
-            f = Path(l)
-            if f.is_file():
-                fg = f.open()
-                while True:
-                    l = fg.readline(256)
-                    if l == '':
-                        break
-                    l = l.rstrip()
+        f = Path(l)
+        if f.is_file():
+            fg = f.open()
+            while True:
+                l = fg.readline(256)
+                if l == '':
+                    break
+                l = l.rstrip()
 
-                    m = entpat.match(l)
+                m = entpat.match(l)
 
-                    mx = 0
-                    for k, v in params.items():
-                        if m.group(k) == v:
-                            mx += 1
-                        elif m.group('path').endswith('*') and v.startswith(m.group('path')[:-1]):
-                            mx += 1
+                mx = 0
+                for k, v in params.items():
+                    if m.group(k) == v:
+                        mx += 1
+                    elif m.group('path').endswith('*') and v.startswith(m.group('path')[:-1]):
+                        mx += 1
 
-                    if mx == 3:
-                        # print("protocol={0}".format(m.group('protocol')))
-                        # print("host={0}".format(m.group('host')))
-                        print("username={0}".format(m.group('username')))
-                        print("password={0}".format(m.group('password')))
-                        done = True
-                        break
-                fg.close()
-                break
+                if mx == 3:
+                    # print("protocol={0}".format(m.group('protocol')))
+                    # print("host={0}".format(m.group('host')))
+                    print("username={0}".format(m.group('username')))
+                    print("password={0}".format(m.group('password')))
+                    done = True
+                    break
+            fg.close()
+                
         if done:
             break
 
